@@ -16,14 +16,14 @@ export class InstagramBusinessAuth {
       response_type: 'code',
       scope: [
         'instagram_business_basic',
-        'instagram_business_content_publish',
         'instagram_business_manage_messages',
         'instagram_business_manage_comments',
+        'instagram_business_content_publish',
         'instagram_business_manage_insights'
       ].join(','),
+      state: crypto.randomUUID(),
       enable_fb_login: '0',
-      force_authentication: '1',
-      state: crypto.randomUUID()
+      force_authentication: '1'
     })
 
     return `${this.AUTH_URL}?${params.toString()}`
@@ -52,7 +52,6 @@ export class InstagramBusinessAuth {
       throw new Error(`Failed to exchange code for token: ${error}`)
     }
 
-    // The response comes directly, not wrapped in a data array
     return response.json()
   }
 
@@ -118,6 +117,7 @@ export class InstagramBusinessAuth {
       })
 
     if (error) {
+      console.error('Error storing auth session:', error)
       throw error
     }
   }
